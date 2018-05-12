@@ -1,0 +1,28 @@
+{
+  "name": "email-server",
+  "version": "0.0.1",
+  "description": "A node application that provides an abstraction for sending emails using a variety of providers such as Amazon SES, Mailgun, SendGrid, etc.",
+  "main": "app.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/diegogadens/email-service.git"
+  },
+  "author": "Diego Gadens",
+  "license": "UNLICENSED",
+  "homepage": "https://github.com/diegogadens/email-service.git#readme",
+  "dependencies": {
+    "mocha": "^5.1.1",
+    "nconf": "^0.10.0",
+    "restify": "^7.1.1",
+    "seppuku": "^0.1.6",
+    "should": "^13.2.1",
+    "supertest": "^3.0.0"
+  }
+}
