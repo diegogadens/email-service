@@ -1,3 +1,4 @@
+const emailController  = require('../controllers/email-controller');
 const statusController = require('../controllers/status-controller');
 
 let _server = null;
@@ -10,7 +11,12 @@ exports.init = (server) => {
     path: '/status',
     handler: statusController.get
   });
-  
+
+  router.post({
+    name: 'Send email',
+    path: '/email',
+    handler: emailController.post
+  });
 };
 
 var router = {
