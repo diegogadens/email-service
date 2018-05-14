@@ -1,3 +1,4 @@
+const validation       = require('../validation')
 const emailController  = require('../controllers/email-controller');
 const statusController = require('../controllers/status-controller');
 
@@ -15,13 +16,15 @@ exports.init = (server) => {
   router.post({
     name: 'Send email',
     path: '/email',
+    validate: validation.email.request,
+    validationErrorHandler: validation.email.errorHandler,
     handler: emailController.post
   });
 };
 
 var router = {
   get(opts)    { return _server.get(opts.path, opts.handler)    },
-  post(opts)   { return _server.post(opts.path, opts.handler)   },
+  post(opts)   { return _server.post(opts.path, opts.validate, opts.validationErrorHandler, opts.handler)},
   put(opts)    { return _server.put(opts.path, opts.handler)    },
   delete(opts) { return _server.delete(opts.path, opts.handler) }
 };

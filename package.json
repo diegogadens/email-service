@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha",
+    "test": "NODE_ENV=test mocha",
     "start": "node app.js"
   },
   "repository": {
@@ -23,6 +23,8 @@
     "restify": "^7.1.1",
     "seppuku": "^0.1.6",
     "should": "^13.2.1",
+    "strummer": "^2.4.4",
+    "strummer-middleware": "^1.1.0",
     "supertest": "^3.0.0"
   }
 }
