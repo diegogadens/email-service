@@ -18,11 +18,14 @@
   "license": "UNLICENSED",
   "homepage": "https://github.com/diegogadens/email-service.git#readme",
   "dependencies": {
+    "crypto-js": "^3.1.9-1",
     "mocha": "^5.1.1",
     "nconf": "^0.10.0",
+    "request": "^2.85.0",
     "restify": "^7.1.1",
     "seppuku": "^0.1.6",
     "should": "^13.2.1",
+    "sinon": "^5.0.7",
     "strummer": "^2.4.4",
     "strummer-middleware": "^1.1.0",
     "supertest": "^3.0.0"
