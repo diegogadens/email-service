@@ -100,6 +100,30 @@ describe('Email', () => {
     });
 
     describe('Invalid requests', () => {
+      it('it should reject a request to send an email if the email is an empty array', (done) => {
+        let emailData = {
+          to: [],
+          subject: 'Sample subject',
+          message: 'Hi! This is a test'
+        };
+        request(server)
+          .post('/email')
+          .send(emailData)
+          .expect(400)
+          .end((err, res) => {
+            if(err)
+              return done(err);
+            should(res.body.code).eql(400);
+            should(res.body.message).eql('Bad request');
+            should(res.body.details).eql([{
+              path: 'body.to',
+              value: emailData.to,
+              message: 'should have at least 1 items'
+            }]);
+            return done();
+          });
+      });
+
       it('it should reject a request to send an email if the email is not inside an array', (done) => {
         let emailData = {
           to: 'testemail.com',
@@ -197,6 +221,31 @@ describe('Email', () => {
           });
       });
 
+      it('it should reject a request to send an email if the CCed email is an empty array', (done) => {
+        let emailData = {
+          to: ['test@email.com'],
+          cc: [],
+          subject: 'Sample subject',
+          message: 'Hi! This is a test'
+        };
+        request(server)
+          .post('/email')
+          .send(emailData)
+          .expect(400)
+          .end((err, res) => {
+            if(err)
+              return done(err);
+            should(res.body.code).eql(400);
+            should(res.body.message).eql('Bad request');
+            should(res.body.details).eql([{
+              path: 'body.cc',
+              value: emailData.cc,
+              message: 'should have at least 1 items'
+            }]);
+            return done();
+          });
+      });
+
       it('it should reject a request to send an email if the CCed email is invalid', (done) => {
         let emailData = {
           to: ['test@email.com'],
@@ -268,6 +317,32 @@ describe('Email', () => {
               path: 'body.bcc',
               value: emailData.bcc,
               message: 'should be an array'
+            }]);
+            return done();
+          });
+      });
+
+      it('it should reject a request to send an email if the BCCed email is an empty array', (done) => {
+        let emailData = {
+          to: ['test@email.com'],
+          cc: ['copied@email.com'],
+          bcc: [],
+          subject: 'Sample subject',
+          message: 'Hi! This is a test'
+        };
+        request(server)
+          .post('/email')
+          .send(emailData)
+          .expect(400)
+          .end((err, res) => {
+            if(err)
+              return done(err);
+            should(res.body.code).eql(400);
+            should(res.body.message).eql('Bad request');
+            should(res.body.details).eql([{
+              path: 'body.bcc',
+              value: emailData.bcc,
+              message: 'should have at least 1 items'
             }]);
             return done();
           });
