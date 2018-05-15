@@ -24,9 +24,8 @@ exports.sendEmail = (to, cc, bcc, subject, message, callback) => {
 
 buildMailGunRequestData = (to, cc, bcc, subject, message) => {
   const { protocol, url, privateKey, domain } = config.emailProviders.mailGun;
-  const currentDate     = new Date().toUTCString();
 
-  const formData        = buildMailGunEmailContent(to, cc, bcc, subject, message);
+  const formData = buildMailGunEmailContent(to, cc, bcc, subject, message);
 
   return {
     url: `${protocol}api:${privateKey}@${url}/${domain}/messages`,
