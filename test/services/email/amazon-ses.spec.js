@@ -90,6 +90,21 @@ describe('Services', () => {
           done()
         })
       });
+
+      it('should receive an http error while trying to send a request to Amazon SES', (done) => {
+        request.post.yields('some http error');
+
+        const { url, accesKeyId } = config.emailProviders.amazonSES
+        const to = ['diegogadens@gmail.com']
+        const subject = 'Subject'
+        const message = 'The message'
+
+        amazonSES.sendEmail(to, null, null, subject, message, (err, response) => {
+          should.exist(err)
+          err.should.eql('some http error');
+          done()
+        });
+      });
     });
   });
 });
