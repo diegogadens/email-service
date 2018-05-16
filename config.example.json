@@ -1,4 +1,32 @@
 {
   "shutDownTimeout": 1000,
-  "serverPort": 8456
+  "serverPort": 8345,
+  "redis":{
+    "host": "127.0.0.1",
+    "port": 6379,
+    "emailJobsQueueName": "email_jobs_queue"
+  },
+  "emailProviders": {
+    "amazonSES": {
+      "providerName": "AMAZON_SES",
+      "url": "https://email.us-east-1.amazonaws.com",
+      "fromAddress": "from@gmail.com",
+      "accesKeyId": "someAmazonKeyId",
+      "secretAccessKey": "someAmazonSecretAccessKey"
+    },
+    "mailGun": {
+      "providerName": "MAIL_GUN",
+      "protocol":"https://",
+      "url": "api.mailgun.net/v3",
+      "fromAddress": "from@gmail.com",
+      "domain": "someMailGunDomain",
+      "privateKey": "someMailGunPrivateKey"
+    },
+    "sendGrid":{
+      "providerName": "SEND_GRID",
+      "url": "https://api.sendgrid.com/v3/mail/send",
+      "fromAddress": "from@gmail.com",
+      "apiKey": "someSendGridApiKey"
+    }
+  }
 }
