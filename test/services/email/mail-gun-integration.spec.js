@@ -30,6 +30,7 @@ describe('Integration', () => {
           should.not.exist(err)
           sinon.assert.calledWith(request.post, {
             url:`${protocol}api:${privateKey}@${url}/${domain}/messages`,
+            timeout: config.emailProviders.timeoutInMs,
             form: {
               from: fromAddress,
               to: `<${to[0]}>`,
@@ -52,6 +53,7 @@ describe('Integration', () => {
           should.not.exist(err)
           sinon.assert.calledWith(request.post, {
             url:`${protocol}api:${privateKey}@${url}/${domain}/messages`,
+            timeout: config.emailProviders.timeoutInMs,
             form: {
               from: fromAddress,
               to: `<${to[0]}>`,

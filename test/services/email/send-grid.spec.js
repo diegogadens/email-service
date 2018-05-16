@@ -32,6 +32,7 @@ describe('Services', () => {
           should.not.exist(err)
           sinon.assert.calledWith(request.post, {
             url:`${url}`,
+            timeout: config.emailProviders.timeoutInMs,
             headers: {
               Authorization: `Bearer ${apiKey}`,
               'Content-Type': 'application/json'
@@ -68,6 +69,7 @@ describe('Services', () => {
           should.not.exist(err)
           sinon.assert.calledWith(request.post, {
             url:`${url}`,
+            timeout: config.emailProviders.timeoutInMs,
             headers: {
               Authorization: `Bearer ${apiKey}`,
               'Content-Type': 'application/json'

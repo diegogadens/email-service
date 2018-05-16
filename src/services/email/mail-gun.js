@@ -29,6 +29,7 @@ const buildRequestData = (to, cc, bcc, subject, message) => {
 
   return {
     url: `${protocol}api:${privateKey}@${url}/${domain}/messages`,
+    timeout: config.emailProviders.timeoutInMs,
     form: formData
   }
 }

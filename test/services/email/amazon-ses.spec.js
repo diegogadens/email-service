@@ -41,6 +41,8 @@ describe('Services', () => {
         amazonSES.sendEmail(to, null, null, subject, message, (err, response) => {
           should.not.exist(err)
           sinon.assert.calledWith(request.post, {
+            url: `${url}`,
+            timeout: config.emailProviders.timeoutInMs,
             form: {
               "Action": "SendRawEmail",
               "RawMessage.Data": encryptedMessage
@@ -48,8 +50,7 @@ describe('Services', () => {
             headers: {
               "Date": "Tue, 15 May 2018 21:06:30 GMT",
               "X-Amzn-Authorization": `AWS3-HTTPS AWSAccessKeyId=${accesKeyId}, Algorithm=HMACSHA256, Signature=${encryptedMessage}`
-            },
-            url: `${url}`
+            }
           });
           response.should.eql({
             code: 200,
@@ -70,6 +71,8 @@ describe('Services', () => {
         amazonSES.sendEmail(to, null, null, subject, message, (err, response) => {
           should.not.exist(err)
           sinon.assert.calledWith(request.post, {
+            url: `${url}`,
+            timeout: config.emailProviders.timeoutInMs,
             form: {
               "Action": "SendRawEmail",
               "RawMessage.Data": encryptedMessage
@@ -77,8 +80,7 @@ describe('Services', () => {
             headers: {
               "Date": "Tue, 15 May 2018 21:06:30 GMT",
               "X-Amzn-Authorization": `AWS3-HTTPS AWSAccessKeyId=${accesKeyId}, Algorithm=HMACSHA256, Signature=${encryptedMessage}`
-            },
-            url: `${url}`
+            }
           });
 
           response.should.eql({

@@ -32,6 +32,7 @@ const buildRequestData = (to, cc, bcc, subject, message) => {
 
   return {
     url: url,
+    timeout: config.emailProviders.timeoutInMs,
     headers: awsHeaders,
     form: formData
   }

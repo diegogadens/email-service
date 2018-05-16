@@ -7,6 +7,7 @@
     "emailJobsQueueName": "email_jobs_queue"
   },
   "emailProviders": {
+    "timeoutInMs": 5000,
     "amazonSES": {
       "providerName": "AMAZON_SES",
       "url": "https://email.us-east-1.amazonaws.com",
