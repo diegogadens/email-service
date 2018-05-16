@@ -1,10 +1,32 @@
 const testServer = require('../../src/server');
+const queue      = require('../../src/services/queue/job-manager')
 const request    = require('supertest');
 const should     = require('should');
+const sinon      = require('sinon');
 const server     = testServer.createServer();
 
 describe('Email', () => {
+  let sandbox = null;
+  const redisJobId = 123;
+  const expectedResponse = {
+    code: 202,
+    message: 'Your email has been queued and will be sent shortly',
+    emailJobId: redisJobId
+  }
+
   describe('/POST email', () => {
+
+    beforeEach(() => {
+      sandbox = sinon.createSandbox();
+      sandbox.stub(queue, 'pushEmailJob');
+
+      queue.pushEmailJob.yields(null, redisJobId);
+    });
+
+    afterEach(() => {
+      sandbox.restore();
+    })
+
     describe('Valid request', () => {
       it('it should accept a request to send an email', (done) => {
         let emailData = {
@@ -15,11 +37,21 @@ describe('Email', () => {
         request(server)
           .post('/email')
           .send(emailData)
-          .expect(201)
+          .expect(202)
           .end((err, res) => {
             if(err)
               return done(err);
-            should(res.body).eql('OK');
+            sinon.assert.calledWith(queue.pushEmailJob, {
+              email: {
+                to: emailData.to,
+                cc: undefined,
+                bcc: undefined,
+                subject: emailData.subject,
+                message: emailData.message
+              },
+              deliveryAttempts: []
+            });
+            should(res.body).eql(expectedResponse);
             return done();
           });
       });
@@ -32,11 +64,21 @@ describe('Email', () => {
         request(server)
           .post('/email')
           .send(emailData)
-          .expect(201)
+          .expect(202)
           .end((err, res) => {
             if(err)
               return done(err);
-            should(res.body).eql('OK');
+            sinon.assert.calledWith(queue.pushEmailJob, {
+              email: {
+                to: emailData.to,
+                cc: undefined,
+                bcc: undefined,
+                subject: undefined,
+                message: emailData.message
+              },
+              deliveryAttempts: []
+            });
+            should(res.body).eql(expectedResponse);
             return done();
           });
       });
@@ -51,11 +93,21 @@ describe('Email', () => {
         request(server)
           .post('/email')
           .send(emailData)
-          .expect(201)
+          .expect(202)
           .end((err, res) => {
             if(err)
               return done(err);
-            should(res.body).eql('OK');
+            sinon.assert.calledWith(queue.pushEmailJob, {
+              email: {
+                to: emailData.to,
+                cc: emailData.cc,
+                bcc: undefined,
+                subject: emailData.subject,
+                message: emailData.message
+              },
+              deliveryAttempts: []
+            });
+            should(res.body).eql(expectedResponse);
             return done();
           });
       });
@@ -69,11 +121,21 @@ describe('Email', () => {
         request(server)
           .post('/email')
           .send(emailData)
-          .expect(201)
+          .expect(202)
           .end((err, res) => {
             if(err)
               return done(err);
-            should(res.body).eql('OK');
+            sinon.assert.calledWith(queue.pushEmailJob, {
+              email: {
+                to: emailData.to,
+                cc: emailData.cc,
+                bcc: undefined,
+                subject: emailData.subject,
+                message: emailData.message
+              },
+              deliveryAttempts: []
+            });
+            should(res.body).eql(expectedResponse);
             return done();
           });
       });
@@ -89,11 +151,21 @@ describe('Email', () => {
         request(server)
           .post('/email')
           .send(emailData)
-          .expect(201)
+          .expect(202)
           .end((err, res) => {
             if(err)
               return done(err);
-            should(res.body).eql('OK');
+            sinon.assert.calledWith(queue.pushEmailJob, {
+              email: {
+                to: emailData.to,
+                cc: emailData.cc,
+                bcc: emailData.bcc,
+                subject: emailData.subject,
+                message: emailData.message
+              },
+              deliveryAttempts: []
+            });
+            should(res.body).eql(expectedResponse);
             return done();
           });
       });

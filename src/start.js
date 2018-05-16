@@ -1,8 +1,10 @@
 const config = require('../config');
 const log    = require('./log');
 const server = require('./server');
+const redis  = require('./redis');
 
 let serverRunning = false;
+let app = null;
 
 const exit = (code) => {
   if (app && serverRunning) {
@@ -28,9 +30,17 @@ process.on('SIGTERM', () => {
   return exit(0);
 });
 
-var app = server.createServer();
+//Mandatory Redis connection
+redis.setClient(config.redis.port, config.redis.host, (err, client) => {
+  if (!redis.configured() || (err != null)) {
+    log.error('Cannot connect to Redis, exiting');
+    return exit('SIGTERM');
+  }
 
-app.listen(config.serverPort, () => {
-  log(`listening at ${config.serverPort}`);
-  return serverRunning = true;
+  app = server.createServer();
+
+  app.listen(config.serverPort, () => {
+    log(`listening at ${config.serverPort}`);
+    return serverRunning = true;
+  });
 });

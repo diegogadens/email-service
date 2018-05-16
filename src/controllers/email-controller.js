@@ -1,49 +1,52 @@
-amazonSES = require('../services/email/amazon-ses');
-mailGun   = require('../services/email/mail-gun');
-sendGrid  = require('../services/email/send-grid');
-log       = require('../log')
+const amazonSES = require('../services/email/amazon-ses');
+const mailGun   = require('../services/email/mail-gun');
+const sendGrid  = require('../services/email/send-grid');
+const queue     = require('../services/queue/job-manager')
+const log       = require('../log')
 
 exports.post = (req, res, next) => {
-  const { to, cc, bcc, subject, message } = req.body;
+  const emailJob = sanitizeBody(req.body);
 
-  amazonSES.sendEmail(to, cc, bcc, subject, message, (err, response) => {
+  queue.pushEmailJob(emailJob, (err, jobId) => {
     if(err){
-      log.error(`Error while sending email: ${err}`)
+      log.error(`Error while queuing email: ${err}`)
       return next(err)
     }
     else{
-      res.send(response.code, response);
+      res.send(202, beautifyResponse(jobId));
       return next();
     }
-  })
-
-  //
-  // mailGun.sendEmail(to, cc, bcc, subject, message, (err, response) => {
-  //   if(err){
-  //     log.error(`Error while sending email: ${err}`)
-  //     return next(err)
-  //   }
-  //   else{
-  //     res.send(response.code, response);
-  //     return next();
-  //   }
-  // })
-
-  // sendGrid.sendEmail(to, cc, bcc, subject, message, (err, response) => {
-  //   if(err){
-  //     log.error(`Error while sending email: ${err}`)
-  //     return next(err)
-  //   }
-  //   if(response.error){
-  //     res.send(response.error.code, response);
-  //     return next();
-  //   }
-  //   else{
-  //     res.send(response.code, response);
-  //     return next();
-  //   }
-  // })
-
-
-
+  });
 };
+
+const sanitizeBody = (body) => {
+  const { to, cc, bcc, subject, message } = body;
+
+  return {
+    email:{
+      to,
+      cc,
+      bcc,
+      subject,
+      message
+    },
+    deliveryAttempts: []
+  }
+}
+
+const beautifyResponse = (jobId) => {
+  return {
+    code: 202,
+    message: 'Your email has been queued and will be sent shortly',
+    emailJobId: jobId
+  }
+}
+
+
+
+
+
+
+
+
+//
