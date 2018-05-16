@@ -4,7 +4,7 @@ const crypto       = require('../../utils/crypto')
 const request      = require('request')
 
 exports.sendEmail = (to, cc, bcc, subject, message, callback) => {
-  const requestData = buildMailGunRequestData(to, cc, bcc, subject, message);
+  const requestData = buildRequestData(to, cc, bcc, subject, message);
 
   request.post(requestData, (err, httpResponse, body) => {
     if (err)
@@ -22,10 +22,10 @@ exports.sendEmail = (to, cc, bcc, subject, message, callback) => {
   });
 }
 
-buildMailGunRequestData = (to, cc, bcc, subject, message) => {
+const buildRequestData = (to, cc, bcc, subject, message) => {
   const { protocol, url, privateKey, domain } = config.emailProviders.mailGun;
 
-  const formData = buildMailGunEmailContent(to, cc, bcc, subject, message);
+  const formData = buildEmailContent(to, cc, bcc, subject, message);
 
   return {
     url: `${protocol}api:${privateKey}@${url}/${domain}/messages`,
@@ -33,15 +33,15 @@ buildMailGunRequestData = (to, cc, bcc, subject, message) => {
   }
 }
 
-buildMailGunEmailContent = (to, cc, bcc, subject, message) => {
-  let emailForm = addMailGunRecipients(to, cc, bcc);
+const buildEmailContent = (to, cc, bcc, subject, message) => {
+  let emailForm = addRecipients(to, cc, bcc);
       emailForm.subject = subject;
       emailForm.text = message;
 
   return emailForm;
 }
 
-addMailGunRecipients = (to, cc, bcc) => {
+const addRecipients = (to, cc, bcc) => {
   let recipients = {
     from: config.emailProviders.mailGun.fromAddress,
     to: emailsParser(to)

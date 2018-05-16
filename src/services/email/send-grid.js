@@ -1,12 +1,9 @@
 const config       = require('../../../config')
-// const emailsParser = require('../../utils/email-array-to-angle-brackets')
 const crypto       = require('../../utils/crypto')
 const request      = require('request')
 
 exports.sendEmail = (to, cc, bcc, subject, message, callback) => {
-  const requestData = buildSendGridRequestData(to, cc, bcc, subject, message);
-
-  console.log(JSON.stringify(requestData));
+  const requestData = buildRequestData(to, cc, bcc, subject, message);
 
   request.post(requestData, (err, httpResponse, body) => {
     if (err)
@@ -17,7 +14,6 @@ exports.sendEmail = (to, cc, bcc, subject, message, callback) => {
       message: body
     };
 
-    console.log("Response ", response);
     if (httpResponse.statusCode != 202)
       return callback(null, { error: response });
     else
@@ -25,11 +21,11 @@ exports.sendEmail = (to, cc, bcc, subject, message, callback) => {
   });
 }
 
-buildSendGridRequestData = (to, cc, bcc, subject, message) => {
+const buildRequestData = (to, cc, bcc, subject, message) => {
   const { url, apiKey } = config.emailProviders.sendGrid;
 
-  const header   = buildSendGridHeader(apiKey)
-  const formData = buildSendGridEmailContent(to, cc, bcc, subject, message);
+  const header   = buildHeader(apiKey)
+  const formData = buildEmailContent(to, cc, bcc, subject, message);
 
   return {
     url: `${url}`,
@@ -38,14 +34,14 @@ buildSendGridRequestData = (to, cc, bcc, subject, message) => {
   }
 }
 
-buildSendGridHeader = (apiKey) => {
+const buildHeader = (apiKey) => {
   return {
     Authorization: `Bearer ${apiKey}`,
     "Content-Type": "application/json"
   }
 }
 
-buildSendGridEmailContent = (to, cc, bcc, subject, message) => {
+const buildEmailContent = (to, cc, bcc, subject, message) => {
   let emailForm = {
     personalizations: [{
       to: emailsParser(to)
@@ -70,7 +66,7 @@ buildSendGridEmailContent = (to, cc, bcc, subject, message) => {
   return emailForm;
 }
 
-emailsParser = (emails) => {
+const emailsParser = (emails) => {
   let recipients = emails.map((email) => {
     return { email: email }
   })
