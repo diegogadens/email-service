@@ -61,7 +61,7 @@ describe('Integration', () => {
         const message = 'The message'
 
         sendGrid.sendEmail([], null, null, subject, message, (err, response) => {
-          should.not.exist(err)
+          should.exist(err)
           sinon.assert.calledWith(request.post, {
             url:`${url}`,
             timeout: config.emailProviders.timeoutInMs,
@@ -82,7 +82,7 @@ describe('Integration', () => {
             }
           });
 
-          response.error.code.should.eql(400);
+          err.error.code.should.eql(400);
           done()
         });
       });

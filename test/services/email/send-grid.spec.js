@@ -66,7 +66,7 @@ describe('Services', () => {
         const message = 'The message'
 
         sendGrid.sendEmail(to, null, null, subject, message, (err, response) => {
-          should.not.exist(err)
+          should.exist(err)
           sinon.assert.calledWith(request.post, {
             url:`${url}`,
             timeout: config.emailProviders.timeoutInMs,
@@ -87,7 +87,7 @@ describe('Services', () => {
             }
           });
 
-          response.should.eql({
+          err.should.eql({
             error:{
               code:401,
               message: 'SendGrid response'

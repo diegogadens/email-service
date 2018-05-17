@@ -5,7 +5,6 @@ let redisClient = null
 
 exports.pushEmailJob = (emailJob, callback) => {
   redisClient = redis.client();
-
   redisClient.rpush(
     config.redis.emailJobsQueueName,
     JSON.stringify(emailJob),

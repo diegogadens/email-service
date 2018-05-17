@@ -2,6 +2,7 @@ const config = require('../config');
 const log    = require('./log');
 const server = require('./server');
 const redis  = require('./redis');
+const worker = require('./workers/worker');
 
 let serverRunning = false;
 let app = null;
@@ -43,4 +44,7 @@ redis.setClient(config.redis.port, config.redis.host, (err, client) => {
     log(`listening at ${config.serverPort}`);
     return serverRunning = true;
   });
+
+  worker.init()
+
 });

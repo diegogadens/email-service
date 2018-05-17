@@ -3,6 +3,8 @@ const emailsParser = require('../../utils/email-array-to-angle-brackets')
 const crypto       = require('../../utils/crypto')
 const request      = require('request')
 
+let errorCounter = 0;
+
 exports.sendEmail = (to, cc, bcc, subject, message, callback) => {
   const requestData = buildRequestData(to, cc, bcc, subject, message);
 
@@ -16,7 +18,7 @@ exports.sendEmail = (to, cc, bcc, subject, message, callback) => {
     };
 
     if (httpResponse.statusCode != 200)
-      return callback(null, { error: response });
+      return callback({ error: response });
     else
       return callback(null, response)
   });
@@ -55,4 +57,17 @@ const addRecipients = (to, cc, bcc) => {
     recipients.bcc = emailsParser(bcc);
 
   return recipients;
+}
+
+exports.setErrorCounter = (counter) => {
+  errorCounter = counter;
+  console.log(`Mailgun error counter ${errorCounter}`);
+}
+
+exports.getErrorCounter = () => {
+  return errorCounter
+}
+
+exports.getName = () => {
+  return config.emailProviders.mailGun.providerName
 }
