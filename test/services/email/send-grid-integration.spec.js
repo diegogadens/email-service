@@ -6,7 +6,7 @@ const request    = require('request');
 
 describe('Integration', () => {
 
-  const sendGrid = new SendGrid('Sendgrid - TEST')
+  const sendGrid = new SendGrid('Sendgrid - TEST');
   let sandbox = null;
 
   describe('Email', () => {
@@ -19,17 +19,17 @@ describe('Integration', () => {
 
       afterEach(() => {
         sandbox.restore();
-      })
+      });
 
       it('should send an email successfully through SendGrid', (done) => {
 
-        const { url, apiKey, fromAddress } = config.emailProviders.sendGrid
-        const to = ['diegogadens@gmail.com']
-        const subject = 'Integration test'
-        const message = 'This email has been sent as part of an integration test with Send Grid.'
+        const { url, apiKey, fromAddress } = config.emailProviders.sendGrid;
+        const to = ['diegogadens@gmail.com'];
+        const subject = 'Integration test';
+        const message = 'This email has been sent as part of an integration test with Send Grid.';
 
         sendGrid.sendEmail(to, null, null, subject, message, (err, response) => {
-          should.not.exist(err)
+          should.not.exist(err);
           sinon.assert.calledWith(request.post, {
             url:`${url}`,
             timeout: config.emailProviders.timeoutInMs,
@@ -44,25 +44,25 @@ describe('Integration', () => {
               }],
               from: { email: fromAddress },
               content: [{
-                type: "text/plain",
+                type: 'text/plain',
                 value: message
               }]
             }
           });
           response.code.should.eql(202);
-          done()
+          done();
         });
       });
 
       it('should receive an error response from SendGrid', (done) => {
 
-        const { url, apiKey, fromAddress } = config.emailProviders.sendGrid
-        const to = ['diegogadens@gmail.com']
-        const subject = 'Subject'
-        const message = 'The message'
+        const { url, apiKey, fromAddress } = config.emailProviders.sendGrid;
+        const to = ['diegogadens@gmail.com'];
+        const subject = 'Subject';
+        const message = 'The message';
 
         sendGrid.sendEmail([], null, null, subject, message, (err, response) => {
-          should.exist(err)
+          should.exist(err);
           sinon.assert.calledWith(request.post, {
             url:`${url}`,
             timeout: config.emailProviders.timeoutInMs,
@@ -77,14 +77,14 @@ describe('Integration', () => {
               }],
               from: { email: fromAddress },
               content: [{
-                type: "text/plain",
+                type: 'text/plain',
                 value: message
               }]
             }
           });
 
           err.error.code.should.eql(400);
-          done()
+          done();
         });
       });
     });

@@ -1,7 +1,7 @@
 const EmailProvider = require ('./EmailProvider');
-const config        = require('../../../config')
-const emailsParser  = require('../../utils/email-array-to-angle-brackets')
-const crypto        = require('../../utils/crypto')
+const config        = require('../../../config');
+const emailsParser  = require('../../utils/email-array-to-angle-brackets');
+const crypto        = require('../../utils/crypto');
 
 
 const createHeaderSignature = Symbol();
@@ -20,7 +20,7 @@ class AmazonSES extends EmailProvider {
 
     const currentDate     = new Date().toUTCString();
 
-    const headerSignature = this[createHeaderSignature](currentDate, secretAccessKey)
+    const headerSignature = this[createHeaderSignature](currentDate, secretAccessKey);
     const awsHeaders      = this[configureAwsHeaders](currentDate, accesKeyId, headerSignature);
     const formData        = this[buildEmailContent](to, cc, bcc, subject, message);
 
@@ -29,7 +29,7 @@ class AmazonSES extends EmailProvider {
       timeout: config.emailProviders.timeoutInMs,
       headers: awsHeaders,
       form: formData
-    }
+    };
   }
 
   [createHeaderSignature](currentDate, secretAccessKey){
@@ -43,7 +43,7 @@ class AmazonSES extends EmailProvider {
     return {
       'Date' : currentDate,
       'X-Amzn-Authorization': `AWS3-HTTPS AWSAccessKeyId=${accesKeyId}, Algorithm=HMACSHA256, Signature=${signature}`
-    }
+    };
   }
 
   [buildEmailContent](to, cc, bcc, subject, message) {

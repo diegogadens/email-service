@@ -6,7 +6,7 @@ const request    = require('request');
 
 describe('Integration', () => {
 
-  const amazonSES = new AmazonSES('Amazon SES - TEST')
+  const amazonSES = new AmazonSES('Amazon SES - TEST');
   let sandbox = null;
 
   describe('Email', () => {
@@ -19,19 +19,19 @@ describe('Integration', () => {
 
       afterEach(() => {
         sandbox.restore();
-      })
+      });
 
       it('should send an email successfully', (done) => {
-        const { url, accesKeyId } = config.emailProviders.amazonSES
-        const to = ['diegogadens@gmail.com']
-        const subject = 'Integration test'
-        const message = 'This email has been sent as part of an integration test with Amazon SES.'
+        const { url, accesKeyId } = config.emailProviders.amazonSES;
+        const to = ['diegogadens@gmail.com'];
+        const subject = 'Integration test';
+        const message = 'This email has been sent as part of an integration test with Amazon SES.';
 
         amazonSES.sendEmail(to, null, null, subject, message, (err, response) => {
-          should.not.exist(err)
+          should.not.exist(err);
           response.code.should.eql(200);
-          done()
-        })
+          done();
+        });
       });
 
     });

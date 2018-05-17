@@ -45,6 +45,6 @@ redis.setClient(config.redis.port, config.redis.host, (err, client) => {
     return serverRunning = true;
   });
 
-  worker.init()
+  worker.init();
 
 });

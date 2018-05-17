@@ -1,7 +1,7 @@
 const config = require('../../../config');
 const redis = require('../../redis');
 
-let redisClient = null
+let redisClient = null;
 
 exports.pushEmailJob = (emailJob, callback) => {
   redisClient = redis.client();
@@ -10,13 +10,12 @@ exports.pushEmailJob = (emailJob, callback) => {
     JSON.stringify(emailJob),
     (err, response) => {
       if(err)
-        callback(err)
+        callback(err);
       else
-        callback(null, response)
+        callback(null, response);
     }
   );
-
-}
+};
 
 exports.popEmailJob = (callback) => {
   redisClient = redis.client();
@@ -25,10 +24,9 @@ exports.popEmailJob = (callback) => {
     config.redis.emailJobsQueueName,
     (err, response) => {
       if(err)
-        callback(err)
+        callback(err);
       else
-        callback(null, JSON.parse(response))
+        callback(null, JSON.parse(response));
     }
   );
-
-}
+};

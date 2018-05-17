@@ -1,6 +1,6 @@
 const s            = require('strummer');
 const sware        = require('strummer-middleware');
-const errorHandler = require('../errors/bad-request-handler')
+const errorHandler = require('../errors/bad-request-handler');
 
 exports.request = sware({
   body: s({
@@ -12,4 +12,4 @@ exports.request = sware({
   })
 });
 
-exports.errorHandler = errorHandler
+exports.errorHandler = errorHandler;

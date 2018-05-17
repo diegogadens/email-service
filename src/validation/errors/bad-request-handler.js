@@ -10,4 +10,4 @@ module.exports = (strummerError, req, res, next) => {
   };
 
   res.send(400, errorResponse);
-}
+};

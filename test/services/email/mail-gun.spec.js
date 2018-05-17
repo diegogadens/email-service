@@ -6,7 +6,7 @@ const request    = require('request');
 
 describe('Services', () => {
 
-  const mailGun = new MailGun('Mailgun - TEST')
+  const mailGun = new MailGun('Mailgun - TEST');
   let sandbox = null;
 
   describe('Email', () => {
@@ -19,18 +19,18 @@ describe('Services', () => {
 
       afterEach(() => {
         sandbox.restore();
-      })
+      });
 
       it('should send an email successfully through MailGun', (done) => {
         request.post.yields(null, {statusCode: 200}, 'MailGun response');
 
-        const { protocol, url, privateKey, domain, fromAddress } = config.emailProviders.mailGun
-        const to = ['diegogadens@gmail.com']
-        const subject = 'Subject'
-        const message = 'The message'
+        const { protocol, url, privateKey, domain, fromAddress } = config.emailProviders.mailGun;
+        const to = ['diegogadens@gmail.com'];
+        const subject = 'Subject';
+        const message = 'The message';
 
         mailGun.sendEmail(to, null, null, subject, message, (err, response) => {
-          should.not.exist(err)
+          should.not.exist(err);
           sinon.assert.calledWith(request.post, {
             url:`${protocol}api:${privateKey}@${url}/${domain}/messages`,
             timeout: config.emailProviders.timeoutInMs,
@@ -45,20 +45,20 @@ describe('Services', () => {
             code: 200,
             message: 'MailGun response'
           });
-          done()
+          done();
         });
       });
 
       it('should receive an error response from MailGun', (done) => {
         request.post.yields(null, {statusCode: 401}, 'MailGun response');
 
-        const { protocol, url, privateKey, domain, fromAddress } = config.emailProviders.mailGun
-        const to = ['diegogadens@gmail.com']
-        const subject = 'Subject'
-        const message = 'The message'
+        const { protocol, url, privateKey, domain, fromAddress } = config.emailProviders.mailGun;
+        const to = ['diegogadens@gmail.com'];
+        const subject = 'Subject';
+        const message = 'The message';
 
         mailGun.sendEmail(to, null, null, subject, message, (err, response) => {
-          should.exist(err)
+          should.exist(err);
           sinon.assert.calledWith(request.post, {
             url:`${protocol}api:${privateKey}@${url}/${domain}/messages`,
             timeout: config.emailProviders.timeoutInMs,
@@ -76,22 +76,22 @@ describe('Services', () => {
               message: 'MailGun response'
             }
           });
-          done()
+          done();
         });
       });
 
       it('should receive an http error while trying to send a request to mailgun', (done) => {
         request.post.yields('some http error');
 
-        const { protocol, url, privateKey, domain, fromAddress } = config.emailProviders.mailGun
-        const to = ['diegogadens@gmail.com']
-        const subject = 'Subject'
-        const message = 'The message'
+        const { protocol, url, privateKey, domain, fromAddress } = config.emailProviders.mailGun;
+        const to = ['diegogadens@gmail.com'];
+        const subject = 'Subject';
+        const message = 'The message';
 
         mailGun.sendEmail(to, null, null, subject, message, (err, response) => {
-          should.exist(err)
+          should.exist(err);
           err.should.eql('some http error');
-          done()
+          done();
         });
       });
     });

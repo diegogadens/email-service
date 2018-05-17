@@ -1,10 +1,10 @@
-const validation       = require('../validation')
+const validation       = require('../validation');
 const emailController  = require('../controllers/email-controller');
 const statusController = require('../controllers/status-controller');
-const routeMounter     = require('./mounter')
+const routeMounter     = require('./mounter');
 
 exports.init = (server) => {
-  router = routeMounter.mount(server)
+  router = routeMounter.mount(server);
 
   router.get({
     name: 'Status',

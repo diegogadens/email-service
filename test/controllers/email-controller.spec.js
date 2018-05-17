@@ -1,5 +1,5 @@
 const testServer = require('../../src/server');
-const queue      = require('../../src/services/queue/job-manager')
+const queue      = require('../../src/services/queue/job-manager');
 const request    = require('supertest');
 const should     = require('should');
 const sinon      = require('sinon');
@@ -12,7 +12,7 @@ describe('Email', () => {
     code: 202,
     message: 'Your email has been queued and will be sent shortly',
     emailJobId: redisJobId
-  }
+  };
 
   describe('/POST email', () => {
 
@@ -25,7 +25,7 @@ describe('Email', () => {
 
     afterEach(() => {
       sandbox.restore();
-    })
+    });
 
     describe('Valid request', () => {
       it('it should accept a request to send an email', (done) => {

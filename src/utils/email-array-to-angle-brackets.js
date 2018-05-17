@@ -9,5 +9,5 @@ module.exports = (array) => {
     return emails;
   }
   else
-    return null
-}
+    return null;
+};

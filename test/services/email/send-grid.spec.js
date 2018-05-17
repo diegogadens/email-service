@@ -6,7 +6,7 @@ const request    = require('request');
 
 describe('Services', () => {
 
-  const sendGrid = new SendGrid('Sendgrid - TEST')
+  const sendGrid = new SendGrid('Sendgrid - TEST');
   let sandbox = null;
 
   describe('Email', () => {
@@ -19,18 +19,18 @@ describe('Services', () => {
 
       afterEach(() => {
         sandbox.restore();
-      })
+      });
 
       it('should send an email successfully through SendGrid', (done) => {
         request.post.yields(null, {statusCode: 202}, 'SendGrid response');
 
-        const { url, apiKey, fromAddress } = config.emailProviders.sendGrid
-        const to = ['diegogadens@gmail.com']
-        const subject = 'Subject'
-        const message = 'The message'
+        const { url, apiKey, fromAddress } = config.emailProviders.sendGrid;
+        const to = ['diegogadens@gmail.com'];
+        const subject = 'Subject';
+        const message = 'The message';
 
         sendGrid.sendEmail(to, null, null, subject, message, (err, response) => {
-          should.not.exist(err)
+          should.not.exist(err);
           sinon.assert.calledWith(request.post, {
             url:`${url}`,
             timeout: config.emailProviders.timeoutInMs,
@@ -45,7 +45,7 @@ describe('Services', () => {
               }],
               from: { email: fromAddress },
               content: [{
-                type: "text/plain",
+                type: 'text/plain',
                 value: message
               }]
             }
@@ -54,20 +54,20 @@ describe('Services', () => {
             code: 202,
             message: 'SendGrid response'
           });
-          done()
+          done();
         });
       });
 
       it('should receive an error response from SendGrid', (done) => {
         request.post.yields(null, {statusCode: 401}, 'SendGrid response');
 
-        const { url, apiKey, fromAddress } = config.emailProviders.sendGrid
-        const to = ['diegogadens@gmail.com']
-        const subject = 'Subject'
-        const message = 'The message'
+        const { url, apiKey, fromAddress } = config.emailProviders.sendGrid;
+        const to = ['diegogadens@gmail.com'];
+        const subject = 'Subject';
+        const message = 'The message';
 
         sendGrid.sendEmail(to, null, null, subject, message, (err, response) => {
-          should.exist(err)
+          should.exist(err);
           sinon.assert.calledWith(request.post, {
             url:`${url}`,
             timeout: config.emailProviders.timeoutInMs,
@@ -82,7 +82,7 @@ describe('Services', () => {
               }],
               from: { email: fromAddress },
               content: [{
-                type: "text/plain",
+                type: 'text/plain',
                 value: message
               }]
             }
@@ -94,22 +94,22 @@ describe('Services', () => {
               message: 'SendGrid response'
             }
           });
-          done()
+          done();
         });
       });
 
       it('should receive an http error while trying to send a request to mailgun', (done) => {
         request.post.yields('some http error');
 
-        const  { url, apiKey, fromAddress } = config.emailProviders.sendGrid
-        const to = ['diegogadens@gmail.com']
-        const subject = 'Subject'
-        const message = 'The message'
+        const  { url, apiKey, fromAddress } = config.emailProviders.sendGrid;
+        const to = ['diegogadens@gmail.com'];
+        const subject = 'Subject';
+        const message = 'The message';
 
         sendGrid.sendEmail(to, null, null, subject, message, (err, response) => {
-          should.exist(err)
+          should.exist(err);
           err.should.eql('some http error');
-          done()
+          done();
         });
       });
     });

@@ -4,7 +4,7 @@ exports.mount = (server) => {
       return server.get(
         opts.path,
         opts.handler
-      )
+      );
     },
     post(opts){
       return server.post(
@@ -12,19 +12,19 @@ exports.mount = (server) => {
         opts.validate,
         opts.validationErrorHandler,
         opts.handler
-      )
+      );
     },
     put(opts){
       return server.put(
         opts.path,
         opts.handler
-      )
+      );
     },
     delete(opts){
       return server.delete(
         opts.path,
         opts.handler
-      )
+      );
     }
   };
-}
+};

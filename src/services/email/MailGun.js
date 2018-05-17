@@ -20,7 +20,7 @@ class MailGun extends EmailProvider {
       url: `${protocol}api:${privateKey}@${url}/${domain}/messages`,
       timeout: config.emailProviders.timeoutInMs,
       form: formData
-    }
+    };
   }
 
   [buildEmailContent](to, cc, bcc, subject, message) {

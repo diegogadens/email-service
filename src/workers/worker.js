@@ -1,13 +1,13 @@
-const config    = require ('../../config')
-const AmazonSES = require ('../services/email/AmazonSES')
-const MailGun   = require ('../services/email/MailGun')
-const SendGrid  = require ('../services/email/SendGrid')
-const queue     = require ('../services/queue/job-manager')
-const log       = require ('../log')
+const config    = require ('../../config');
+const AmazonSES = require ('../services/email/AmazonSES');
+const MailGun   = require ('../services/email/MailGun');
+const SendGrid  = require ('../services/email/SendGrid');
+const queue     = require ('../services/queue/job-manager');
+const log       = require ('../log');
 
-const amazonSES = new AmazonSES(config.emailProviders.amazonSES.providerName)
-const mailGun = new MailGun(config.emailProviders.mailGun.providerName)
-const sendGrid = new SendGrid(config.emailProviders.sendGrid.providerName)
+const amazonSES = new AmazonSES(config.emailProviders.amazonSES.providerName);
+const mailGun = new MailGun(config.emailProviders.mailGun.providerName);
+const sendGrid = new SendGrid(config.emailProviders.sendGrid.providerName);
 
 const providers = [
   amazonSES,
@@ -21,21 +21,21 @@ let refreshInterval = null;
 exports.init = () => {
   currentProvider = providers[0];
   console.log(`Now sending emails using ${currentProvider.getName()}`);
-  work()
-}
+  work();
+};
 
 exports.stop = () => {
   clearInterval(refreshInterval);
-}
+};
 
 const work = () => {
-  refreshInterval = setInterval(sendEmail, config.delayInMsBetweenEmails)
-}
+  refreshInterval = setInterval(sendEmail, config.delayInMsBetweenEmails);
+};
 
 const sendEmail = () => {
   queue.popEmailJob((err, emailJob) => {
     if(err)
-      log("Redis error: ", err);
+      log(`Redis error: ${err}`);
       //TODO
         //Integrate with some tool that can help with alerting/debugging
         //this type of error (e.g Newrelic)
@@ -44,25 +44,25 @@ const sendEmail = () => {
       sendEmailUsingProvider(emailJob);
     }
     else {
-      log("NO WORK TO BE DONE");
+      log('NO WORK TO BE DONE');
     }
-  })
-}
+  });
+};
 
 const sendEmailUsingProvider = (emailJob) => {
-  let { to, cc, bcc, subject, message } = emailJob.email
+  let { to, cc, bcc, subject, message } = emailJob.email;
 
   currentProvider.sendEmail(to, cc, bcc, subject, message, (err, response) => {
     if(err){
-      pushEmailBackToQueue(emailJob)
-      countError(err)
+      pushEmailBackToQueue(emailJob);
+      countError(err);
     }
     else {
       log('Email sent successfully');
-      discountError()
+      discountError();
     }
   });
-}
+};
 
 const pushEmailBackToQueue = (emailJob) => {
   //TODO Add a retry mechanism and/or a fallback database to prevent data loss
@@ -73,22 +73,22 @@ const pushEmailBackToQueue = (emailJob) => {
         //Integrate with some tool that can help with alerting/debugging
         //this type of error (e.g Newrelic)
   });
-}
+};
 
 const countError = (err) => {
   log(`Error: ${JSON.stringify(err)}`);
-  currentProvider.setErrorCounter( currentProvider.getErrorCounter() + 1)
+  currentProvider.setErrorCounter( currentProvider.getErrorCounter() + 1);
   if(currentProvider.getErrorCounter() >= config.maxErrorsPerProvider){
     currentProvider.setErrorCounter(0);
-    changeProvider()
+    changeProvider();
   }
-}
+};
 
 const discountError = () => {
   if(currentProvider.getErrorCounter() > 0){
     currentProvider.setErrorCounter( currentProvider.getErrorCounter() - 1 );
   }
-}
+};
 
 const changeProvider = () => {
   currentIndex = providers.indexOf(currentProvider);
@@ -96,4 +96,4 @@ const changeProvider = () => {
 
   currentProvider = providers[nextIndex];
   console.log(`Now sending emails using ${currentProvider.getName()}`);
-}
+};

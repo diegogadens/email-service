@@ -1,4 +1,4 @@
-const emailsParser = require('../../src/utils/email-array-to-angle-brackets')
+const emailsParser = require('../../src/utils/email-array-to-angle-brackets');
 const should       = require('should');
 
 describe('Utils', () => {

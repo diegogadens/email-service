@@ -1,5 +1,5 @@
 const EmailProvider = require ('./EmailProvider');
-const config       = require('../../../config')
+const config        = require('../../../config');
 
 
 const buildHeader = Symbol();
@@ -15,7 +15,7 @@ class SendGrid extends EmailProvider {
   buildRequestData(to, cc, bcc, subject, message) {
     const { url, apiKey } = config.emailProviders.sendGrid;
 
-    const header   = this[buildHeader](apiKey)
+    const header   = this[buildHeader](apiKey);
     const formData = this[buildEmailContent](to, cc, bcc, subject, message);
 
     return {
@@ -23,14 +23,14 @@ class SendGrid extends EmailProvider {
       timeout: config.emailProviders.timeoutInMs,
       headers: header,
       json: formData
-    }
+    };
   }
 
   [buildHeader](apiKey) {
     return {
       Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json"
-    }
+      'Content-Type': 'application/json'
+    };
   }
 
   [buildEmailContent](to, cc, bcc, subject, message) {
@@ -42,26 +42,26 @@ class SendGrid extends EmailProvider {
         email: config.emailProviders.sendGrid.fromAddress
       },
       content: [{
-        type: "text/plain",
+        type: 'text/plain',
         value: message
       }]
-    }
+    };
 
     if(cc)
-      emailForm.personalizations[0].cc = this[emailsParser](cc)
+      emailForm.personalizations[0].cc = this[emailsParser](cc);
 
     if(bcc)
-      emailForm.personalizations[0].bcc = this[emailsParser](bcc)
+      emailForm.personalizations[0].bcc = this[emailsParser](bcc);
 
-    emailForm.personalizations[0].subject = subject
+    emailForm.personalizations[0].subject = subject;
 
     return emailForm;
   }
 
   [emailsParser](emails) {
     let recipients = emails.map((email) => {
-      return { email: email }
-    })
+      return { email: email };
+    });
 
     return recipients;
   }
