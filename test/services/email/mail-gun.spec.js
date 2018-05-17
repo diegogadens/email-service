@@ -1,4 +1,4 @@
-const mailGun    = require('../../../src/services/email/mail-gun');
+const MailGun    = require('../../../src/services/email/MailGun');
 const config     = require('../../../config');
 const should     = require('should');
 const sinon      = require('sinon');
@@ -6,6 +6,7 @@ const request    = require('request');
 
 describe('Services', () => {
 
+  const mailGun = new MailGun('Mailgun - TEST')
   let sandbox = null;
 
   describe('Email', () => {

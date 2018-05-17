@@ -1,4 +1,4 @@
-const amazonSES  = require('../../../src/services/email/amazon-ses');
+const AmazonSES  = require('../../../src/services/email/AmazonSES');
 const config     = require('../../../config');
 const crypto     = require('../../../src/utils/crypto')
 const should     = require('should');
@@ -7,6 +7,7 @@ const request    = require('request');
 
 describe('Services', () => {
 
+  const amazonSES = new AmazonSES('Amazon SES - TEST')
   let sandbox = null;
   let clock = null;
   let encryptedMessage = 'An-EnCryPteD-m3ss4Ge'

@@ -1,4 +1,4 @@
-const sendGrid   = require('../../../src/services/email/send-grid');
+const SendGrid   = require('../../../src/services/email/SendGrid');
 const config     = require('../../../config');
 const should     = require('should');
 const sinon      = require('sinon');
@@ -6,6 +6,7 @@ const request    = require('request');
 
 describe('Services', () => {
 
+  const sendGrid = new SendGrid('Sendgrid - TEST')
   let sandbox = null;
 
   describe('Email', () => {

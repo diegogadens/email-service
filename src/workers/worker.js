@@ -1,9 +1,13 @@
 const config    = require ('../../config')
-const amazonSES = require ('../services/email/amazon-ses')
-const mailGun   = require ('../services/email/mail-gun')
-const sendGrid  = require ('../services/email/send-grid')
+const AmazonSES = require ('../services/email/AmazonSES')
+const MailGun   = require ('../services/email/MailGun')
+const SendGrid  = require ('../services/email/SendGrid')
 const queue     = require ('../services/queue/job-manager')
 const log       = require ('../log')
+
+const amazonSES = new AmazonSES(config.emailProviders.amazonSES.providerName)
+const mailGun = new MailGun(config.emailProviders.mailGun.providerName)
+const sendGrid = new SendGrid(config.emailProviders.sendGrid.providerName)
 
 const providers = [
   amazonSES,

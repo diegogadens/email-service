@@ -1,4 +1,4 @@
-const amazonSES  = require('../../../src/services/email/amazon-ses');
+const AmazonSES  = require('../../../src/services/email/AmazonSES');
 const config     = require('../../../config');
 const should     = require('should');
 const sinon      = require('sinon');
@@ -6,6 +6,7 @@ const request    = require('request');
 
 describe('Integration', () => {
 
+  const amazonSES = new AmazonSES('Amazon SES - TEST')
   let sandbox = null;
 
   describe('Email', () => {

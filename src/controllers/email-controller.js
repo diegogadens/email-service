@@ -1,6 +1,3 @@
-const amazonSES = require('../services/email/amazon-ses');
-const mailGun   = require('../services/email/mail-gun');
-const sendGrid  = require('../services/email/send-grid');
 const queue     = require('../services/queue/job-manager')
 const log       = require('../log')
 
