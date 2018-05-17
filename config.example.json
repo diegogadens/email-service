@@ -1,6 +1,8 @@
 {
   "shutDownTimeout": 1000,
   "serverPort": 8345,
+  "delayInMsBetweenEmails": 1000,
+  "maxErrorsPerProvider": 2,
   "redis":{
     "host": "127.0.0.1",
     "port": 6379,
@@ -9,25 +11,25 @@
   "emailProviders": {
     "timeoutInMs": 5000,
     "amazonSES": {
-      "providerName": "AMAZON_SES",
+      "providerName": "Amazon SES",
       "url": "https://email.us-east-1.amazonaws.com",
       "fromAddress": "from@gmail.com",
-      "accesKeyId": "someAmazonKeyId",
-      "secretAccessKey": "someAmazonSecretAccessKey"
+      "accesKeyId": "an access key",
+      "secretAccessKey": "a secret key"
     },
     "mailGun": {
-      "providerName": "MAIL_GUN",
+      "providerName": "Mailgun",
       "protocol":"https://",
       "url": "api.mailgun.net/v3",
       "fromAddress": "from@gmail.com",
-      "domain": "someMailGunDomain",
-      "privateKey": "someMailGunPrivateKey"
+      "domain": "a domain",
+      "privateKey": "a private key"
     },
     "sendGrid":{
-      "providerName": "SEND_GRID",
+      "providerName": "Sendgrid",
       "url": "https://api.sendgrid.com/v3/mail/send",
       "fromAddress": "from@gmail.com",
-      "apiKey": "someSendGridApiKey"
+      "apiKey": "an api key"
     }
   }
 }
