@@ -34,8 +34,7 @@ const sanitizeBody = (body) => {
 const beautifyResponse = (jobId) => {
   return {
     code: 202,
-    message: 'Your email has been queued and will be sent shortly',
-    emailJobId: jobId
+    message: 'Your email has been queued and will be sent shortly'
   };
 };
 
