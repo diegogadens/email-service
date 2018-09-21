@@ -1,16 +1,15 @@
 ## Multi-provider email-service
 A node application that provides an abstraction for sending emails using a variety of providers such as Amazon SES, Mailgun, SendGrid, etc.
 
-#### Problem description
-Create a service that accepts the necessary information and sends emails. It should provide an abstraction between different email service providers. If one of the services goes down, your service can quickly failover to a different provider without affecting customers.
+The service provides an abstraction between different email service providers. If one of the services goes down, the service can quickly failover to a different provider without affecting customers.
 
 Example Email Providers:
 1. SendGrid - [Documentation](https://sendgrid.com/docs/API_Reference/Web_API/mail.html)
 2. Mailgun - [Documentation](http://documentation.mailgun.com/quickstart.html#sending-messages)
 3. Amazon SES - [Documentation](http://docs.aws.amazon.com/ses/latest/APIReference/API_SendEmail.html)
 
-#### Proposed solution
-The problem was solved by creating a service that integrates with the 3 providers above and it's essentially split in 3 main parts:
+#### Service Structure
+The service is essentially split in 3 main parts:
 1. An enpoint where users can POST data to send emails
 2. A Redis queue to create emailJobs that represent the data received on STEP 1
 3. A worker that runs and consumes jobs from the queue, and dispatch emails using the providers
